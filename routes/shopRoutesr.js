@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 
-const {getHomePage, getContactPage, getBlogPage, getCartPage, getCategoryPage, getConfirmationPage, getLoginPage, getRegisterPage, getSingleBlogPage, getSingleProductPage, getTrackingOrderPage, getCheckoutPage} = require ('../controolers/shopController')
+const {getHomePage,getContactPage, getBlogPage, getCartPage, getCategoryPage, getConfirmationPage, getLoginPage, getRegisterPage, getSingleBlogPage, getSingleProductPage, getTrackingOrderPage, getCheckoutPage} = require ('../controolers/shopController')
 
 
 router.get("/", getHomePage)
