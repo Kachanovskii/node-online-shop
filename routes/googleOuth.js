@@ -13,7 +13,10 @@ const isLoggedIn = (req, res, next) => {
   }
     router.get('/', (req,res) => res.send('You are not logged in !'))
     router.get('/failed', (req,res) => res.send('You faild to login in!'))
-    router.get('/success', isLoggedIn, (req, res) => res.send(`Welcome ${req.user.displayName} !`))
+    router.get('/success', isLoggedIn, (req, res) => {
+      res.render('pages/home', {name: req.user.displayName})
+      // res.send(`Welcome ${req.user.displayName} !`)
+    })
     router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
     
     router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
@@ -21,7 +24,7 @@ const isLoggedIn = (req, res, next) => {
         // Successful authentication, redirect home.
         res.redirect('/success');
       });
-    router.get('/logout', (req, res) => {
+    router.get('/logout1', (req, res) => {
         req.session = null;
         req.logout();
         res.redirect('/');

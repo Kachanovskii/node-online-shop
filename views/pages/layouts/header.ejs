@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +15,7 @@
   <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/additional-styles.css">
 </head>
 <body>
   <!--================ Start Header Menu Area =================-->
@@ -54,8 +56,10 @@
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                   aria-expanded="false">Pages</a>
                 <ul class="dropdown-menu">
+                  <% if(name === 'register or log in') { %>
                   <li class="nav-item"><a class="nav-link" href="login">Login</a></li>
                   <li class="nav-item"><a class="nav-link" href="register">Register</a></li>
+                  <% } %>
                   <li class="nav-item"><a class="nav-link" href="tracking-order">Tracking</a></li>
                 </ul>
               </li>
@@ -64,13 +68,21 @@
 
             <ul class="nav-shop">
               <li class="nav-item"><button><i class="ti-search"></i></button></li>
-              <li class="nav-item"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </li>
-              <li class="nav-item ml-1 mr-1"><a class="button button-login" href="login" style="padding: 5px 20px;">Log in</a></li>
-              <li class="nav-item ml-0"><a class="button button-header" href="register" style="padding: 5px 20px;">Register</a></li>
+              <% if(name === 'register or log in') {%></5>
+                <div class="message-header"><span><%- name %></span></div>
+                <li class="nav-item ml-1 mr-1"><a class="button button-login" href="login" style="padding: 5px 20px;">Log in</a></li>
+                <li class="nav-item ml-0"><a class="button button-header" href="register" style="padding: 5px 20px;">Register</a></li>
+                <% } else { %>
+                  <li class="nav-item"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </li>
+                <div class="message-header"><span>Good day, <i class="far fa-user"></i><%- name %></span></div>
+                <li class="nav-item ml-0"><a class="button button-header" href="logout" style="padding: 5px 20px;">Sign out</a></li>
+                <% } %>
             </ul>
           </div>
         </div>
+        
       </nav>
+      
     </div>
   </header>
 	<!--================ End Header Menu Area =================-->
