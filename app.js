@@ -7,7 +7,7 @@ const boodyParser = require('body-parser');
 const passport = require('passport')
 const errorController = require('./controolers/errorController');
 const shopRoutes = require('./routes/shopRoutesr')
-const googleOuth = require('./routes/googleOuth')
+// const googleOuth = require('./routes/googleOuth')
 require('./passport')
 
 
@@ -33,7 +33,8 @@ app.use(cors())
 app.use(express.static(path.join(__dirname, "static")));
 app.use(boodyParser.urlencoded({extended: false}))
 app.use(boodyParser.json());
-
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(shopRoutes)
 
 //googleOuth
@@ -41,9 +42,8 @@ app.use(shopRoutes)
 //   name: 'Vadim-session',
 //   keys: ['key1', 'key2']
 // }))
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(googleOuth)
+
+// app.use(googleOuth)
 
 
 app.use(errorController.get404);
