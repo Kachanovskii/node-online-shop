@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-
-const {getIndexPage,getHomePage,getContactPage, getBlogPage, getCartPage, getCategoryPage, getConfirmationPage, getLoginPage, getRegisterPage, getSingleBlogPage, getSingleProductPage, getTrackingOrderPage, getCheckoutPage, getLogOut, postLoginIn, postRegister, getIndexPageGA, getHomePageGA, getGoogle, getGoogleCallback, getLogOutGA} = require ('../controolers/shopController')
+//Controllers
+const {getIndexPage,getHomePage,getContactPage, getBlogPage, getCartPage, getCategoryPage, getConfirmationPage, getLoginPage, getRegisterPage, getSingleBlogPage, getSingleProductPage, getTrackingOrderPage, getCheckoutPage, getLogOut, postLoginIn, postRegister} = require ('../controolers/shopController')
 
 //Get page
 router.get("/", getIndexPage)
@@ -18,8 +18,6 @@ router.get("/single-blog", getSingleBlogPage)
 router.get("/single-product", getSingleProductPage)
 router.get("/tracking-order", getTrackingOrderPage)
 router.get("/checkout", getCheckoutPage)
-
-
 
 
 //Post login data

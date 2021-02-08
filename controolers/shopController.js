@@ -1,15 +1,14 @@
-
 const express = require('express');
 const router = express.Router();
-const passport = require('passport')
-require('../passport')
 const User = require('../model/users')
 const user = new User()
 
+//Message status
 let messege = 'register or log in'
 let statusLogin = ''
+let statusRegister = ''
 
-
+//Render page
 exports.getIndexPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
@@ -18,18 +17,20 @@ exports.getIndexPage = (req,res,next) => {
     }
     res.render('pages/index', {name: messege})
 }
+
 exports.getHomePage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/home', {opp: req.session.opp, name: user.name})
+        res.render('pages/home', {opp: req.session.opp, name: user.user_name})
         return
     }
     res.redirect('/')   
 }
+
 exports.getContactPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/contact', {opp: req.session.opp, name: user.name})
+        res.render('pages/contact', {opp: req.session.opp, name: user.user_name})
         return
     }
     res.render('pages/contact', {name: messege})
@@ -38,117 +39,134 @@ exports.getContactPage = (req,res,next) => {
 exports.getBlogPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/blog', {opp: req.session.opp, name: user.name})
+        res.render('pages/blog', {opp: req.session.opp, name: user.user_name})
         return
     }
     res.render('pages/blog', {name: messege})
 }
+
 exports.getCartPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/cart', {opp: req.session.opp, name: user.name})
+        res.render('pages/cart', {opp: req.session.opp, name: user.user_name})
         return
     }
    res.render('pages/cart', {name: messege})
 }
+
 exports.getCategoryPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/category', {opp: req.session.opp, name: user.name})
+        res.render('pages/category', {opp: req.session.opp, name: user.user_name})
         return
     }
   res.render('pages/category', {name: messege})
 }
+
 exports.getCheckoutPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/checkout', {opp: req.session.opp, name: user.name})
+        res.render('pages/checkout', {opp: req.session.opp, name: user.user_name})
         return
     }
     res.render('pages/checkout', {name: messege})
 }
+
 exports.getLoginPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/login', {opp: req.session.opp, name: user.name, statusMessage: ''})
+        res.render('pages/login', {opp: req.session.opp, name: user.user_name, statusMessage: ''})
         return
     }
     res.render('pages/login', {name: messege, statusMessage: statusLogin})
     statusLogin = ''
 }
+
 exports.getRegisterPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/register', {opp: req.session.opp, name: user.name})
+        res.render('pages/register', {opp: req.session.opp, name: user.user_name, statusMessage: ''})
         return
     }
-    res.render('pages/register', {name: messege})
+    res.render('pages/register', {name: messege, statusMessage: statusRegister})
+    statusRegister=''
 }
+
 exports.getSingleBlogPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/single-blog', {opp: req.session.opp, name: user.name})
+        res.render('pages/single-blog', {opp: req.session.opp, name: user.user_name})
         return
     }
     res.render('pages/single-blog', {name: messege})
 }
+
 exports.getConfirmationPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/confirmation', {opp: req.session.opp, name: user.name})
+        res.render('pages/confirmation', {opp: req.session.opp, name: user.user_name})
         return
     }
     res.render('pages/confirmation', {name: messege})
 }
+
 exports.getSingleProductPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/single-product', {opp: req.session.opp, name: user.name})
+        res.render('pages/single-product', {opp: req.session.opp, name: user.user_name})
         return
     }
     res.render('pages/single-product', {name: messege})
 }
+
 exports.getTrackingOrderPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/tracking-order', {opp: req.session.opp, name: user.name})
+        res.render('pages/tracking-order', {opp: req.session.opp, name: user.user_name})
         return
     }
     res.render('pages/tracking-order', {name: messege})
 }
 
+//Post data
 exports.postLoginIn = (req, res, next) => {
-    user.login(req.body.name, req.body.password, function(result) {
+    user.login(req.body.user_name, req.body.password, function(result) {
         if(result) {
             req.session.user = result
             req.session.opp = 1
-            res.redirect('/')
+            res.redirect('/home')
         } else {
-
             statusLogin = 'Username or password icorrect !';
             res.redirect('/login')
         }
     })
 }
 
-
 exports.postRegister = (req, res, next) => {
     let userInput = {
-        name: req.body.name,
+        user_name: req.body.user_name,
         email: req.body.email,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
         password: req.body.password
     }
     
-    user.create(userInput, function(lastId) {
+    user.create(userInput, function(lastId, err) {
+        
         if(lastId) {
             user.find(lastId, function(result) {
                 req.session.user = result;
                 req.session.opp = 0;
-                res.redirect('/');
+                res.redirect('/home');
+                res.render('pages/home', {opp: req.session.opp, name: user.user_name})
+                return
             })
-        } else {
+        } 
+        else {
             console.log('Error creating a new user...')
-        }
+            statusRegister = 'An already registered user with this name or email. Try another name or email.';
+            res.redirect('/register')
+      }
     })
 }
 
