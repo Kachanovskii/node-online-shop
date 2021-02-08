@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../model/users')
 const user = new User()
+const Products = require('../model/products')
 
 //Message status
 let messege = 'register or log in'
@@ -11,112 +12,118 @@ let statusRegister = ''
 //Render page
 exports.getIndexPage = (req,res,next) => {
     let user = req.session.user
+    let products = Products.findAll()
     if(user) {
-        res.redirect('/home')
+        res.redirect('/home', {active: 'home', prods: products})
         return
     }
-    res.render('pages/index', {name: messege})
+    res.render('pages/index', {name: messege, active: 'home', prods: products})
 }
 
 exports.getHomePage = (req,res,next) => {
     let user = req.session.user
+    let products = Products.findAll()
     if(user) {
-        res.render('pages/home', {opp: req.session.opp, name: user.user_name})
+        res.render('pages/home', {opp: req.session.opp, name: user.user_name, active: 'home',  prods: products})
         return
     }
-    res.redirect('/')   
+    res.redirect('/', {active: 'home',  prods: products})   
 }
 
 exports.getContactPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/contact', {opp: req.session.opp, name: user.user_name})
+        res.render('pages/contact', {opp: req.session.opp, name: user.user_name, active: 'contact'})
         return
     }
-    res.render('pages/contact', {name: messege})
+    res.render('pages/contact', {name: messege, active: 'contact'})
 }
 
 exports.getBlogPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/blog', {opp: req.session.opp, name: user.user_name})
+        res.render('pages/blog', {opp: req.session.opp, name: user.user_name, active: 'blog'})
         return
     }
-    res.render('pages/blog', {name: messege})
+    res.render('pages/blog', {name: messege, active: 'blog'})
 }
 
 exports.getCartPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/cart', {opp: req.session.opp, name: user.user_name})
+        res.render('pages/cart', {opp: req.session.opp, name: user.user_name, active: 'shop'})
         return
     }
-   res.render('pages/cart', {name: messege})
+   res.render('pages/cart', {name: messege, active: 'shop'})
 }
 
 exports.getCategoryPage = (req,res,next) => {
     let user = req.session.user
+    let products = Products.findAll()
     if(user) {
-        res.render('pages/category', {opp: req.session.opp, name: user.user_name})
+        res.render('pages/category', {opp: req.session.opp, name: user.user_name, active: 'shop', prods: products})
         return
     }
-  res.render('pages/category', {name: messege})
+  res.render('pages/category', {name: messege, active: 'shop', prods: products})
 }
 
 exports.getCheckoutPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/checkout', {opp: req.session.opp, name: user.user_name})
+        res.render('pages/checkout', {opp: req.session.opp, name: user.user_name, active: 'shop'})
         return
     }
-    res.render('pages/checkout', {name: messege})
+    res.render('pages/checkout', {name: messege, active: 'shop'})
 }
 
 exports.getLoginPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/login', {opp: req.session.opp, name: user.user_name, statusMessage: ''})
+        res.render('pages/login', {opp: req.session.opp, name: user.user_name, statusMessage: '', active: 'register-login'})
         return
     }
-    res.render('pages/login', {name: messege, statusMessage: statusLogin})
+    res.render('pages/login', {name: messege, statusMessage: statusLogin, active: 'register-login'})
     statusLogin = ''
 }
 
 exports.getRegisterPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/register', {opp: req.session.opp, name: user.user_name, statusMessage: ''})
+        res.render('pages/register', {opp: req.session.opp, name: user.user_name, statusMessage: '', active: 'register-login'})
         return
     }
-    res.render('pages/register', {name: messege, statusMessage: statusRegister})
+    res.render('pages/register', {name: messege, statusMessage: statusRegister, active: 'register-login'})
     statusRegister=''
 }
 
 exports.getSingleBlogPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/single-blog', {opp: req.session.opp, name: user.user_name})
+        res.render('pages/single-blog', {opp: req.session.opp, name: user.user_name, active: 'blog'})
         return
     }
-    res.render('pages/single-blog', {name: messege})
+    res.render('pages/single-blog', {name: messege, active: 'blog'})
 }
 
 exports.getConfirmationPage = (req,res,next) => {
     let user = req.session.user
     if(user) {
-        res.render('pages/confirmation', {opp: req.session.opp, name: user.user_name})
+        res.render('pages/confirmation', {opp: req.session.opp, name: user.user_name, active: 'shop'})
         return
     }
-    res.render('pages/confirmation', {name: messege})
+    res.render('pages/confirmation', {name: messege, active: 'shop'})
 }
 
 exports.getSingleProductPage = (req,res,next) => {
     let user = req.session.user
+    console.log(req)
+    let products = Products.findById()
+    console.log(products)
     if(user) {
-        res.render('pages/single-product', {opp: req.session.opp, name: user.user_name})
+        res.render('pages/single-product', {opp: req.session.opp, name: user.user_name, active: 'shop'})
         return
     }
-    res.render('pages/single-product', {name: messege})
+    res.render('pages/single-product', {name: messege, active: 'shop'})
 }
 
 exports.getTrackingOrderPage = (req,res,next) => {

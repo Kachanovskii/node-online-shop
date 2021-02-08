@@ -9,14 +9,11 @@ User.prototype = {
     {
         //If user = number return field = id. If user = string return field = username.
         if (user) {
-            console.log('Its user: '+JSON.stringify(user))
             var field = Number.isInteger(user) ? 'id' : 'user_name'
-            console.log('its field: '+ field)
         }
         let sql = `SELECT * FROM users WHERE ${field} = ?`;
         
         pool.query(sql, user, function(err, result) {
-            console.log('it is result: '+result)
             if(err) {
                 throw err;
             }
