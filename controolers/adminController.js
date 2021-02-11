@@ -2,7 +2,10 @@ const Product = require('../model/product')
 
 
 exports.getAdminPage = (req,res,next) => {
-    res.render('pages/admin page/admin', {active: 'overview'})
+    Product.count()
+    .then((quantity) => {
+        res.render('pages/admin page/admin', {active: 'overview', quantity: quantity})
+    })
 }
 
 exports.getAdminProducts = (req,res,next) => {
@@ -48,17 +51,30 @@ exports.postEditProduct = (req, res, next) => {
     Product.findByPk(id)
     .then((product) => {
         product.update({name_prod: name, price: price, imageURL: image, description: description, color: color, category: category, brand: brand})
-        product.save()
-        // res.render('pages/admin page/loader.ejs') 
+        product.save() 
     })
+
     Product.findAll()
-    // .then((products) => {
-    //     res.render('pages/admin page/adminProducts.ejs', {active: 'products', products: products})
-    // })
     .then((product) => {
         setTimeout(() => {
             res.redirect('/admin/products')
         }, 500)    
     })
-   
+}
+
+exports.postDeleteProduct = (req, res, next) => {
+    const id = req.body.id
+    console.log(id)
+
+    Product.findByPk(id)
+    .then((product) => {
+        product.destroy()
+    })
+    
+    Product.findAll()
+    .then((product) => {
+        setTimeout(() => {
+            res.redirect('/admin/products')
+        }, 500)    
+    })
 }

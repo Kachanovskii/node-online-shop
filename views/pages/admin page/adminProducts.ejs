@@ -12,7 +12,7 @@
     <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
     <h5><b>All products</b></h5>
   </header>
-  <div class="loader" style="width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; background-color: #fff; z-index: 10; display:flex; flex-direction: column; justify-content: center; align-items: center;">
+  <div class="loader" style=" position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #fff; z-index: 10; display:flex; flex-direction: column; justify-content: center; align-items: center;">
     <div class="lds-ring" style="margin: 0;"><div></div><div></div><div></div><div></div></div>
               <p>Update data...</p>
             </div>
@@ -28,10 +28,14 @@
       <p class="card-text"><strong>Color:</strong> <%- product.color %></p>
       <hr>
       <div class="d-flex">
+        <form action="/admin/delete-product" method="POST">
+        <input type="hidden" name="id" value="<%- product.id_prod %>" id="">
         <button type="button" class="btn btn-warning pl-5 pr-5" style="margin-right: 2px;" data-bs-toggle="modal" data-bs-target="#exampleModal2">
           Edit product
         </button>
-        <a href="#" class="btn btn-danger">Delete</a>
+        <button type="submit" href="#" class="btn btn-danger">Delete</a>
+          </button>
+          </form>
     </div>
     <button type="button" class="btn btn-link pl-5 pr-5" style="margin-top: 2px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
       More info

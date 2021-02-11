@@ -24,7 +24,8 @@ exports.getIndexPage = (req,res,next) => {
 
 exports.getHomePage = (req,res,next) => {
     let user = req.session.user
-    Product.findAll().then((products) => {
+    Product.findAll()
+    .then((products) => {
         if(user) {
             res.render('pages/home', {opp: req.session.opp, name: user.user_name, active: 'home', products: products, user: true})
             return
@@ -70,11 +71,14 @@ exports.addToCart = (req, res, next) => {
 
 exports.getCategoryPage = (req,res,next) => {
     let user = req.session.user
-    if(user) {
-        res.render('pages/category', {opp: req.session.opp, name: user.user_name, active: 'shop'})
-        return
-    }
-  res.render('pages/category', {name: messege, active: 'shop'})
+    Product.findAll()
+    .then((products) => {
+        if(user) {
+            res.render('pages/category', {opp: req.session.opp, name: user.user_name, active: 'shop', products: products})
+            return
+        }
+      res.render('pages/category', {name: messege, active: 'shop', products: products})
+    })
 }
 
 exports.getCheckoutPage = (req,res,next) => {

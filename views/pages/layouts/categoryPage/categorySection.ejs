@@ -3,7 +3,6 @@
         <div class="container">
           <div class="row">
             <%- include('sidebar.ejs') %>
-
             
             <div class="col-xl-9 col-lg-8 col-md-7">
               <!-- Start Filter Bar -->
@@ -35,21 +34,23 @@
               <!-- Start Best Seller -->
               <section class="lattest-product-area pb-40 category-list">
                 <div class="row">
+                  <% products.forEach((product) => { %>
                   <div class="col-md-6 col-lg-4">
                     <div class="card text-center card-product">
                       <div class="card-product__img">
-                        <img class="card-img" src="" alt="">
+                        <img class="card-img" src=<%-product.imageURL %> alt="<%-product.prod_name %>">
                         <ul class="card-product__imgOverlay">
                           <li><button><i class="ti-shopping-cart"></i></button></li>
                         </ul>
                       </div>
                       <div class="card-body">
-                        <p>category</p>
-                        <h4 class="card-product__title"><a href="#">name</a></h4>
-                        <p class="card-product__price">price</p>
+                        <p><%-product.category %></p>
+                        <h4 class="card-product__title"><a href="/single-product/<%- product.id_prod %>"><%-product.name_prod %></a></h4>
+                        <p class="card-product__price"><%-product.price %>  грн</p>
                       </div>
                     </div>
                   </div>
+                <% }) %>
                 </div>
               </section>
               <!-- End Best Seller -->
