@@ -3,26 +3,28 @@
       <div class="container">
         <div class="section-intro pb-60px">
           <p>Popular Item in the market</p>
-          <h2>Trending <span class="section-intro__style"><%- %></span></h2>
+          <h2>Trending <span class="section-intro__style">Product</span></h2>
         </div>
         <div class="row">
-    <% prods.forEach(function(product){ %>
+   <% products.forEach(product => { %> 
             <div class="col-md-6 col-lg-4 col-xl-3">
               <div class="card text-center card-product">
                 <div class="card-product__img">
-                  <img class="card-img" src=<%- product.imageURL %> alt="<%- product.name_p %>">
+                  <img class="card-img" src=<%- product.imageURL %> alt="<%- product.prod_name %>">
+                  <% if(user) {%>
                   <ul class="card-product__imgOverlay">
                     <li><button><i class="ti-shopping-cart"></i></button></li>
                   </ul>
+                  <% } %>
                 </div>
                 <div class="card-body">
                   <p><%- product.category %></p>
-                  <h4 class="card-product__title"><a href="single-product.html"><%- product.name_p %></a></h4>
-                  <p class="card-product__price"><%- product.price %></p>
+                  <h4 class="card-product__title"><a href="/single-product/<%- product.id_prod %>"><%- product.name_prod %></a></h4>
+                  <p class="card-product__price"><%- product.price %> грн </p>
                 </div>
               </div>
             </div>
-            <% }) %>
+          <% }) %>
           </div>
         </div>
       </section>

@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session')
+const bodyParser = require('body-parser');
 const path = require('path')
-const boodyParser = require('body-parser');
 const errorController = require('./controolers/errorController');
 const shopRoutes = require('./routes/shopRoutes')
 const adminRoutes = require('./routes/adminRoutes')
@@ -25,12 +25,16 @@ app.use(session({
 
 
 
-app.use(express.static(path.join(__dirname, "static")));
-app.use(boodyParser.urlencoded({extended: false}))
-app.use(boodyParser.json());
 
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static(path.join(__dirname, "static")));
+app.use('/single-product/:id_p', express.static(path.join(__dirname, "static")));
+app.use('/add-product', express.static(path.join(__dirname, "static")));
+
+
+
+app.use('/admin', adminRoutes)
 app.use(shopRoutes)
-app.use(adminRoutes)
 app.use(errorController.get404);
 
 

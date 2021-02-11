@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../model/users')
 const user = new User()
-const Products = require('../model/products')
+const Product = require('../model/product')
 
 //Message status
 let messege = 'register or log in'
@@ -11,23 +11,26 @@ let statusRegister = ''
 
 //Render page
 exports.getIndexPage = (req,res,next) => {
-    let user = req.session.user
-    let products = Products.findAll()
-    if(user) {
-        res.redirect('/home', {active: 'home', prods: products})
-        return
-    }
-    res.render('pages/index', {name: messege, active: 'home', prods: products})
+    let user = req.session.user 
+    Product.findAll()
+    .then((products) => {
+        if(user) {
+            res.redirect('/home', {active: 'home', products: products, user: true})
+            return
+        }
+        res.render('pages/index', {name: messege, active: 'home', products: products, user: false})
+    })
 }
 
 exports.getHomePage = (req,res,next) => {
     let user = req.session.user
-    let products = Products.findAll()
-    if(user) {
-        res.render('pages/home', {opp: req.session.opp, name: user.user_name, active: 'home',  prods: products})
-        return
-    }
-    res.redirect('/', {active: 'home',  prods: products})   
+    Product.findAll().then((products) => {
+        if(user) {
+            res.render('pages/home', {opp: req.session.opp, name: user.user_name, active: 'home', products: products, user: true})
+            return
+        }
+        res.redirect('/', {active: 'home', products: products, user: false})   
+    })
 }
 
 exports.getContactPage = (req,res,next) => {
@@ -54,17 +57,24 @@ exports.getCartPage = (req,res,next) => {
         res.render('pages/cart', {opp: req.session.opp, name: user.user_name, active: 'shop'})
         return
     }
-   res.render('pages/cart', {name: messege, active: 'shop'})
+    res.render('pages/error', {name: messege, active: 'home'})
+}
+
+exports.addToCart = (req, res, next) => {
+    let user = req.session.user
+    if(user) {
+        res.redirect('/cart')
+        return
+    }
 }
 
 exports.getCategoryPage = (req,res,next) => {
     let user = req.session.user
-    let products = Products.findAll()
     if(user) {
-        res.render('pages/category', {opp: req.session.opp, name: user.user_name, active: 'shop', prods: products})
+        res.render('pages/category', {opp: req.session.opp, name: user.user_name, active: 'shop'})
         return
     }
-  res.render('pages/category', {name: messege, active: 'shop', prods: products})
+  res.render('pages/category', {name: messege, active: 'shop'})
 }
 
 exports.getCheckoutPage = (req,res,next) => {
@@ -114,16 +124,18 @@ exports.getConfirmationPage = (req,res,next) => {
     res.render('pages/confirmation', {name: messege, active: 'shop'})
 }
 
-exports.getSingleProductPage = (req,res,next) => {
+ exports.getSingleProductPage = (req,res,next) => {
     let user = req.session.user
-    console.log(req)
-    let products = Products.findById()
-    console.log(products)
-    if(user) {
-        res.render('pages/single-product', {opp: req.session.opp, name: user.user_name, active: 'shop'})
-        return
-    }
-    res.render('pages/single-product', {name: messege, active: 'shop'})
+    console.log(req.params.id_prod)
+    Product.findByPk(req.params.id_prod)
+    .then((product) => {
+        if(user) {
+            res.render('pages/single-product', {opp: req.session.opp, name: user.user_name, active: 'shop', product: product, user: true})
+             return
+         }
+        res.render('pages/single-product', {name: messege, active: 'shop', product: product, user: false})
+    })
+     
 }
 
 exports.getTrackingOrderPage = (req,res,next) => {
@@ -136,7 +148,7 @@ exports.getTrackingOrderPage = (req,res,next) => {
 }
 
 //Post data
-exports.postLoginIn = (req, res, next) => {
+exports.postLoginIn = (req, res, next) => { 
     user.login(req.body.user_name, req.body.password, function(result) {
         if(result) {
             req.session.user = result
