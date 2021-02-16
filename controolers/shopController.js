@@ -1,3 +1,5 @@
+const Product = require('../models/Product')
+
 
 exports.getHomePage = (req,res,next) => {
     res.render('pages/index')
@@ -12,6 +14,10 @@ exports.getCartPage = (req,res,next) => {
     res.render('pages/cart')
 }
 exports.getCategoryPage = (req,res,next) => {
+    Product.findAll()
+    .then((products)=> {
+        console.log(fieldData)
+    })
     res.render('pages/category')
 }
 exports.getCheckoutPage = (req,res,next) => {
