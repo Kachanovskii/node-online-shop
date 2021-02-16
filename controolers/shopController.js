@@ -1,5 +1,5 @@
-const Product = require('../models/Product')
 
+const Product = require('../models/Product')
 
 exports.getHomePage = (req,res,next) => {
     res.render('pages/index')
@@ -15,9 +15,12 @@ exports.getCartPage = (req,res,next) => {
 }
 exports.getCategoryPage = (req,res,next) => {
     Product.findAll()
-    .then((products)=> {
-        console.log(fieldData)
+    .then(([rows, fieldData])=> {
+        console.log(rows)
     })
+    res.render('pages/category', {products: products})
+    return
+    
     res.render('pages/category')
 }
 exports.getCheckoutPage = (req,res,next) => {
