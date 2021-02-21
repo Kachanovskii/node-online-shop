@@ -64,7 +64,6 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
     const id = req.body.id
-    console.log(id)
 
     Product.findByPk(id)
     .then((product) => {

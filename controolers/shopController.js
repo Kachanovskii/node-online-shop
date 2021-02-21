@@ -22,8 +22,6 @@ exports.getIndexPage = (req,res,next) => {
     })
 }
 
-const Product = require('../models/Product')
-
 exports.getHomePage = (req,res,next) => {
     let user = req.session.user
     Product.findAll()
@@ -72,16 +70,6 @@ exports.addToCart = (req, res, next) => {
 }
 
 exports.getCategoryPage = (req,res,next) => {
-<<<<<<< HEAD
-    Product.findAll()
-    .then(([rows, fieldData])=> {
-        console.log(rows)
-    })
-    res.render('pages/category', {products: products})
-    return
-    
-    res.render('pages/category')
-=======
     let user = req.session.user
     Product.findAll()
     .then((products) => {
@@ -91,7 +79,6 @@ exports.getCategoryPage = (req,res,next) => {
         }
       res.render('pages/category', {name: messege, active: 'shop', products: products})
     })
->>>>>>> dev
 }
 
 exports.getCheckoutPage = (req,res,next) => {
@@ -143,7 +130,6 @@ exports.getConfirmationPage = (req,res,next) => {
 
  exports.getSingleProductPage = (req,res,next) => {
     let user = req.session.user
-    console.log(req.params.id_prod)
     Product.findByPk(req.params.id_prod)
     .then((product) => {
         if(user) {

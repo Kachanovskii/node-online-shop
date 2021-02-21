@@ -37,7 +37,6 @@ User.prototype = {
 
         pool.query(sql, bind, function(err, result) {
             if(err) {
-                // throw err
                 console.log(err)
                 callback(null)
 
