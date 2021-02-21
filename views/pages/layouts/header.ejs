@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +15,7 @@
   <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/additional-styles.css">
 </head>
 <body>
   <!--================ Start Header Menu Area =================-->
@@ -30,19 +32,17 @@
           </button>
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-              <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-              <li class="nav-item active submenu dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+              <li class="nav-item <% if(active === 'home') {%> active <% } %>"><a class="nav-link" href="/">Home</a></li>
+              <li class="nav-item submenu dropdown <% if(active === 'shop') {%> active <% } %>">
+                <a href="#" class="nav-link" data-toggle="dropdown" role="button" aria-haspopup="true"
                   aria-expanded="false">Shop</a>
                 <ul class="dropdown-menu">
                   <li class="nav-item"><a class="nav-link" href="category">Shop Category</a></li>
-                  <li class="nav-item"><a class="nav-link" href="single-product">Product Details</a></li>
                   <li class="nav-item"><a class="nav-link" href="checkout">Product Checkout</a></li>
                   <li class="nav-item"><a class="nav-link" href="confirmation">Confirmation</a></li>
-                  <li class="nav-item"><a class="nav-link" href="cart">Shopping Cart</a></li>
                 </ul>
 							</li>
-              <li class="nav-item submenu dropdown">
+              <li class="nav-item submenu dropdown <% if(active === 'blog') {%> active <% } %>">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                   aria-expanded="false">Blog</a>
                 <ul class="dropdown-menu">
@@ -50,26 +50,37 @@
                   <li class="nav-item"><a class="nav-link" href="single-blog">Blog Details</a></li>
                 </ul>
 							</li>
-							<li class="nav-item submenu dropdown">
+							<li class="nav-item submenu dropdown <% if(active === 'register-login') {%> active <% } %>">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                  aria-expanded="false">Pages</a>
+                  aria-expanded="false">Login and Register</a>
                 <ul class="dropdown-menu">
+                  <% if(name === 'register or log in') { %>
                   <li class="nav-item"><a class="nav-link" href="login">Login</a></li>
                   <li class="nav-item"><a class="nav-link" href="register">Register</a></li>
+                  <% } %>
                   <li class="nav-item"><a class="nav-link" href="tracking-order">Tracking</a></li>
                 </ul>
               </li>
-              <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+              <li class="nav-item <% if(active === 'contact') {%> active <% } %>"><a class="nav-link" href="contact">Contact</a></li>
             </ul>
 
             <ul class="nav-shop">
               <li class="nav-item"><button><i class="ti-search"></i></button></li>
-              <li class="nav-item"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </li>
-              <li class="nav-item"><a class="button button-header" href="#">Buy Now</a></li>
+              <% if(name === 'register or log in') {%></5>
+                <div class="message-header"><span><%- name %></span></div>
+                <li class="nav-item ml-1 mr-1"><a class="button button-login" href="login" style="padding: 5px 20px;">Log in</a></li>
+                <li class="nav-item ml-0"><a class="button button-header" href="register" style="padding: 5px 20px;">Register</a></li>
+                <% } else { %>
+                  <li class="nav-item"><a href="cart"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button> </a></li>
+                <div class="message-header"><span>Good day, <i class="far fa-user"></i><%- name %></span></div>
+                <li class="nav-item ml-0"><a class="button button-header" href="logout" style="padding: 5px 20px;">Sign out</a></li>
+                <% } %>
             </ul>
           </div>
         </div>
+        
       </nav>
+      
     </div>
   </header>
 	<!--================ End Header Menu Area =================-->

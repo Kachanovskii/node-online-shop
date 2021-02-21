@@ -1,0 +1,161 @@
+<%- include('../layouts/adminPage/header.ejs') %>
+<%- include('../layouts/adminPage/sidebar.ejs') %>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+    <h5><b>All products</b></h5>
+  </header>
+  <div class="loader" style=" position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #fff; z-index: 10; display:flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="lds-ring" style="margin: 0;"><div></div><div></div><div></div><div></div></div>
+              <p>Update data...</p>
+            </div>
+            <div class="w3-row-padding w3-margin-bottom">
+<% products.forEach((product) => { %>
+  <div class="card" style="width: 21rem;">
+    <img class="card-img" src=<%- product.imageURL %> alt="<%- product.name_prod %>">
+    <div class="card-body">
+      <h5 class="card-title"><%- product.name_prod %></h5>
+      <span class="badge bg-primary"><%- product.category %></span>
+      <p class="card-text"><strong>Price:</strong> <%- product.price %> грн</p>
+      <p class="card-text"><strong>Brand:</strong> <%- product.brand %></p>
+      <p class="card-text"><strong>Color:</strong> <%- product.color %></p>
+      <hr>
+      <div class="d-flex">
+        <form action="/admin/delete-product" method="POST">
+        <input type="hidden" name="id" value="<%- product.id_prod %>" id="">
+        <button type="button" class="btn btn-warning pl-5 pr-5" style="margin-right: 2px;" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+          Edit product
+        </button>
+        <button type="submit" href="#" class="btn btn-danger">Delete</a>
+          </button>
+          </form>
+    </div>
+    <button type="button" class="btn btn-link pl-5 pr-5" style="margin-top: 2px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      More info
+    </button>
+  </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" style="max-width: 800px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><%- product.name_prod %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex">
+              <img class="card-img" style="width: 30%; margin-right: 20px;" src=<%- product.imageURL %> alt="<%- product.name_prod %>">
+              <div>
+                <p>Category: <span class="badge bg-primary"><%- product.category %></span></p>
+                <p class="card-text"><strong>Price:</strong><%- product.price %> грн</p>
+                <p class="card-text"><strong>Brand:</strong><%- product.brand %></p>
+                <p class="card-text"><strong>Color:</strong><%- product.color %></p>
+              </div>
+            </div>
+            <p class="card-text"><strong>Description:</strong> <%- product.description %></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+      <div class="modal-dialog" style="max-width: 800px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel2">Edit product</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/admin/products" method="POST">
+              <div class="mb-3">
+                <input type="hidden" name="id" value="<%- product.id_prod %>" id="">
+                <label class="form-label">Product name: </label>
+                <input type="text" class="form-control" id="" aria-describedby="" name="name" value="<%- product.name_prod %>" placeholder="Product name" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Product price: </label>
+                <input type="number" class="form-control" id="" aria-describedby="" name="price" value="<%- product.price %>" placeholder="Product price" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Product image: </label>
+                <input type="text" class="form-control" id="" aria-describedby="" name="image" value="<%- product.imageURL %>" placeholder="Product image" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Description: </label>
+                <textarea type="text" class="form-control" id="" aria-describedby="" name="description" placeholder="Product description" required><%- product.description %>
+           </textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Color: </label>
+                <input type="text" class="form-control" id="" aria-describedby="" name="color" value="<%- product.color %>" placeholder="Product color" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Category: </label>
+                <input type="text" class="form-control" id="" aria-describedby="" name="category" value="<%- product.category %>" placeholder="Category" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Brand: </label>
+                <input type="text" class="form-control" id="" aria-describedby="" name="brand" value="<%- product.brand %>" placeholder="Brand" required>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" value="Edit">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+<% }) %>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-16 w3-light-grey">
+    <h4>FOOTER</h4>
+    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  </footer>
+
+  <!-- End page content -->
+</div>
+
+<script>
+  setTimeout(() => {
+    let loader = document.querySelector('.loader')
+    loader.style = 'display: none'
+  }, 1000)
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+</body>
+</html>
